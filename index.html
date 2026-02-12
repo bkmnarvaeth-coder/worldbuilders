@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Worldbuilding Studio — The Future of the Creator Economy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08080A;
+    --bg-elevated: #101014;
+    --bg-card: #16161B;
+    --text: #E8E4DB;
+    --text-muted: #8A8578;
+    --text-dim: #5A5750;
+    --accent: #D4A853;
+    --accent-warm: #E8B960;
+    --accent-glow: rgba(212, 168, 83, 0.10);
+    --accent-glow-strong: rgba(212, 168, 83, 0.20);
+    --border: rgba(232, 228, 219, 0.07);
+    --border-accent: rgba(212, 168, 83, 0.18);
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'DM Sans', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px;
+  }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  /* ─── Nav ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    backdrop-filter: blur(20px);
+    background: rgba(8, 8, 10, 0.7);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo { font-family: var(--serif); font-size: 1.3rem; letter-spacing: 0.02em; }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+
+  .nav-links a {
+    font-size: 0.8rem; font-weight: 400; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--text-muted); transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    padding: 0.55rem 1.5rem !important;
+    border: 1px solid var(--accent) !important;
+    color: var(--accent) !important;
+    transition: all 0.3s !important;
+  }
+  .nav-cta:hover { background: var(--accent) !important; color: var(--bg) !important; }
+
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+  .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--text); margin: 5px 0; }
+
+  /* ─── Hero ─── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 7rem 2rem 2rem; position: relative; overflow: hidden;
+  }
+
+  .hero::before {
+    content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
+    pointer-events: none; z-index: 1;
+  }
+
+  .hero-tag {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 2.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+    animation: fadeUp 0.8s ease both;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+  }
+  .hero-tag::before, .hero-tag::after {
+    content: ''; width: 40px; height: 1px; background: var(--accent); opacity: 0.35;
+  }
+
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(3rem, 7.5vw, 7rem);
+    line-height: 1.0; font-weight: 400; letter-spacing: -0.02em; max-width: 880px;
+    animation: fadeUp 0.8s ease 0.1s both;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.5), 0 0 80px rgba(8,8,10,0.9);
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); text-shadow: 0 2px 20px rgba(212,168,83,0.3), 0 4px 40px rgba(0,0,0,0.6); }
+
+  .hero-sub {
+    font-size: 1.15rem; line-height: 1.7; color: var(--text-muted);
+    max-width: 560px; margin-top: 2rem; font-weight: 300;
+    animation: fadeUp 0.8s ease 0.2s both;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 4px 30px rgba(8,8,10,0.8);
+  }
+
+  .hero-actions {
+    margin-top: 3rem; display: flex; gap: 1rem;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 1rem 2.4rem; background: var(--accent); color: var(--bg);
+    font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase; border: none;
+    cursor: pointer; transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .btn-primary:hover {
+    background: var(--accent-warm); transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(212, 168, 83, 0.2);
+  }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 1rem 2.4rem; background: rgba(8,8,10,0.6); color: var(--text);
+    font-family: var(--sans); font-size: 0.85rem; font-weight: 400;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .btn-secondary:hover { border-color: var(--text-muted); background: rgba(8,8,10,0.8); }
+
+  .hero-scroll {
+    position: absolute; bottom: 3rem; z-index: 2;
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-dim);
+    display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+    animation: fadeUp 0.8s ease 0.5s both;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.9);
+  }
+  .hero-scroll .line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* ─── Section Basics ─── */
+  .section-num {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.2em;
+    color: var(--accent); text-transform: uppercase; margin-bottom: 3rem;
+  }
+
+  /* ─── Problem ─── */
+  .problem { padding: 8rem 3rem; border-top: 1px solid var(--border); }
+  .problem-inner { max-width: 800px; margin: 0 auto; }
+
+  .problem h2 {
+    font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.25; font-weight: 400; margin-bottom: 2.5rem;
+  }
+  .problem h2 em { font-style: italic; color: var(--accent); }
+
+  .problem p {
+    font-size: 1.08rem; line-height: 1.8; color: var(--text-muted);
+    font-weight: 300; margin-bottom: 1.5rem;
+  }
+  .problem p strong { color: var(--text); font-weight: 500; }
+
+  .callout {
+    margin: 3rem 0; padding: 2rem 2.5rem;
+    border-left: 2px solid var(--accent); background: var(--accent-glow);
+  }
+  .callout p {
+    font-family: var(--serif); font-size: 1.35rem; line-height: 1.5;
+    color: var(--text); font-weight: 400; margin: 0;
+  }
+  .callout p em { font-style: italic; color: var(--accent); }
+
+  /* ─── Convergence ─── */
+  .convergence { padding: 8rem 3rem; border-top: 1px solid var(--border); background: var(--bg-elevated); }
+  .convergence-inner { max-width: 1100px; margin: 0 auto; }
+  .convergence-header { max-width: 650px; margin-bottom: 4rem; }
+
+  .convergence-header h2 {
+    font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    line-height: 1.25; font-weight: 400; margin-bottom: 1.5rem;
+  }
+  .convergence-header h2 em { font-style: italic; color: var(--accent); }
+  .convergence-header p { font-size: 1.05rem; line-height: 1.75; color: var(--text-muted); font-weight: 300; }
+
+  .convergence-visual {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px;
+    background: var(--border); border: 1px solid var(--border); margin-bottom: 3rem;
+  }
+
+  .conv-pillar { background: var(--bg); padding: 3rem 2.5rem; position: relative; transition: all 0.4s; }
+  .conv-pillar:hover { background: var(--bg-card); }
+  .conv-pillar::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+  }
+  .conv-pillar:hover::after { transform: scaleX(1); }
+
+  .conv-num { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.18em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.8rem; }
+  .conv-pillar h3 { font-family: var(--serif); font-size: 1.55rem; font-weight: 400; margin-bottom: 1rem; }
+  .conv-pillar p { font-size: 0.92rem; line-height: 1.7; color: var(--text-muted); font-weight: 300; }
+
+  .convergence-base {
+    text-align: center; padding: 2rem; border: 1px solid var(--border);
+    border-top: 2px solid var(--accent); background: var(--bg);
+  }
+  .convergence-base p { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .convergence-base span { display: block; margin-top: 0.5rem; font-family: var(--sans); font-size: 0.88rem; color: var(--text-muted); letter-spacing: 0; text-transform: none; }
+
+  /* ─── Apps = New Book ─── */
+  .newbook { padding: 8rem 3rem; border-top: 1px solid var(--border); }
+  .newbook-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+
+  .newbook-left h2 {
+    font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    line-height: 1.2; font-weight: 400; margin-bottom: 1.5rem;
+  }
+  .newbook-left h2 em { font-style: italic; color: var(--accent); }
+  .newbook-left p { font-size: 1.02rem; line-height: 1.75; color: var(--text-muted); font-weight: 300; margin-bottom: 1.2rem; }
+
+  .newbook-right { border: 1px solid var(--border); padding: 2.5rem; background: var(--bg-elevated); }
+
+  .comparison-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 1.5rem; }
+
+  .comparison-row {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem;
+    align-items: center; padding: 0.8rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem;
+  }
+  .comparison-row:last-child { border: none; }
+  .comp-old { color: var(--text-dim); text-decoration: line-through; text-decoration-color: rgba(90,87,80,0.4); }
+  .comp-arrow { color: var(--accent); font-size: 0.75rem; }
+  .comp-new { color: var(--text); font-weight: 500; }
+
+  /* ─── Case Studies / Proof ─── */
+  .proof {
+    padding: 8rem 3rem;
+    border-top: 1px solid var(--border);
+    background: var(--bg-elevated);
+  }
+
+  .proof-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .proof-header {
+    max-width: 650px;
+    margin-bottom: 4rem;
+  }
+
+  .proof-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    line-height: 1.25;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+  }
+
+  .proof-header h2 em { font-style: italic; color: var(--accent); }
+
+  .proof-header p {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .proof-card {
+    background: var(--bg);
+    padding: 2.2rem 2rem;
+    position: relative;
+    transition: all 0.4s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .proof-card:hover {
+    background: var(--bg-card);
+  }
+
+  .proof-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+
+  .proof-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .proof-niche {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+  }
+
+  .proof-creator {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 0.3rem;
+  }
+
+  .proof-app {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 1.2rem;
+  }
+
+  .proof-metric {
+    margin-top: auto;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .proof-metric .metric-value {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: var(--accent);
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .proof-metric .metric-label {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 0.3rem;
+  }
+
+  .proof-desc {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+    font-weight: 300;
+    margin-bottom: 1.2rem;
+    flex-grow: 1;
+  }
+
+  .proof-footer {
+    max-width: 1200px;
+    margin: 3rem auto 0;
+    text-align: center;
+  }
+
+  .proof-footer p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .proof-footer p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .proof-tier-label {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+    margin-top: 3rem;
+    padding-left: 0.2rem;
+  }
+
+  .proof-tier-label:first-of-type {
+    margin-top: 0;
+  }
+
+  /* ─── Process ─── */
+  .process { padding: 8rem 3rem; border-top: 1px solid var(--border); }
+  .process-inner { max-width: 1000px; margin: 0 auto; }
+
+  .process-header h2 {
+    font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 400; max-width: 550px;
+  }
+  .process-header h2 em { font-style: italic; color: var(--accent); }
+
+  .process-steps { margin-top: 4rem; }
+
+  .step {
+    display: grid; grid-template-columns: 100px 1fr; gap: 3rem;
+    padding: 3rem 0; border-bottom: 1px solid var(--border); align-items: start;
+  }
+  .step:first-child { border-top: 1px solid var(--border); }
+  .step:hover .step-num { color: var(--accent); }
+
+  .step-num {
+    font-family: var(--serif); font-size: 3.5rem; font-weight: 400;
+    color: var(--text-dim); line-height: 1; transition: color 0.3s;
+  }
+
+  .step-content h3 { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 0.8rem; }
+  .step-content p { font-size: 1rem; line-height: 1.7; color: var(--text-muted); font-weight: 300; max-width: 600px; }
+
+  /* ─── Who This Is For ─── */
+  .avatar { padding: 8rem 3rem; border-top: 1px solid var(--border); background: var(--bg-elevated); }
+  .avatar-inner { max-width: 1000px; margin: 0 auto; }
+
+  .avatar-header h2 {
+    font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; margin-bottom: 1rem;
+  }
+  .avatar-header h2 em { font-style: italic; color: var(--accent); }
+  .avatar-header p { font-size: 1.02rem; color: var(--text-muted); font-weight: 300; max-width: 500px; line-height: 1.7; }
+
+  .avatar-grid { margin-top: 3.5rem; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+
+  .avatar-card {
+    border: 1px solid var(--border); padding: 2.5rem 2rem;
+    transition: all 0.4s; background: var(--bg);
+  }
+  .avatar-card:hover { border-color: var(--border-accent); background: var(--bg-elevated); }
+
+  .avatar-card .av-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+  .avatar-card h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 0.8rem; }
+  .avatar-card p { font-size: 0.9rem; line-height: 1.7; color: var(--text-muted); font-weight: 300; }
+
+  /* ─── Founders ─── */
+  .founders { padding: 8rem 3rem; border-top: 1px solid var(--border); }
+  .founders-inner { max-width: 1000px; margin: 0 auto; }
+
+  .founders-header h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; }
+  .founders-header h2 em { font-style: italic; color: var(--accent); }
+
+  .founders-grid { margin-top: 4rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+
+  .founder-card {
+    border: 1px solid var(--border); padding: 3rem 2.5rem;
+    transition: all 0.4s; background: var(--bg);
+  }
+  .founder-card:hover { border-color: var(--border-accent); background: var(--bg-card); }
+
+  .founder-role { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.5rem; }
+  .founder-card h3 { font-family: var(--serif); font-size: 1.8rem; font-weight: 400; margin-bottom: 1.2rem; }
+  .founder-card p { font-size: 0.95rem; line-height: 1.7; color: var(--text-muted); font-weight: 300; margin-bottom: 1.5rem; }
+
+  .founder-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .founder-tags span { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.05em; padding: 0.35rem 0.8rem; border: 1px solid var(--border); color: var(--text-dim); }
+
+  /* ─── CTA ─── */
+  .cta {
+    padding: 10rem 3rem; border-top: 1px solid var(--border);
+    text-align: center; position: relative;
+  }
+  .cta::before {
+    content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 500px;
+    background: radial-gradient(ellipse, var(--accent-glow-strong) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .cta h2 {
+    font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.1; font-weight: 400; max-width: 650px; margin: 0 auto 1.5rem;
+  }
+  .cta h2 em { font-style: italic; color: var(--accent); }
+
+  .cta > p {
+    font-size: 1.05rem; color: var(--text-muted); font-weight: 300;
+    margin-bottom: 3rem; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6;
+  }
+
+  .cta-actions { display: flex; justify-content: center; gap: 1rem; }
+
+  /* ─── Hero Trust ─── */
+  .hero-trust {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 1.2s;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.9);
+  }
+
+  /* ─── Hero Earth Background ─── */
+  .hero-earth-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 500px;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeUp 2s ease forwards;
+    animation-delay: 1s;
+  }
+  .hero-earth-bg canvas {
+    display: block;
+  }
+  .earth-atmosphere {
+    display: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 8rem;
+  }
+
+  .hero-content::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(ellipse at center 40%,
+      rgba(8,8,10,0.85) 0%,
+      rgba(8,8,10,0.7) 25%,
+      rgba(8,8,10,0.4) 50%,
+      rgba(8,8,10,0.1) 70%,
+      transparent 85%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* ─── Revenue Curves ─── */
+  .curves-section {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .curves-section h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 2rem;
+  }
+  .curves-chart {
+    background: rgba(255,255,255,0.015);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .curves-chart svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .curves-caption {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  .curves-caption strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* ─── Pain Grid ─── */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    margin: 2.5rem 0;
+    padding-left: 0.5rem;
+  }
+  .pain-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+  .pain-num {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .pain-point p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ─── Partnership ─── */
+  .partnership {
+    padding: 7rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+  .partnership-inner { max-width: 1000px; margin: 0 auto; }
+
+  .partnership-header { margin-bottom: 4rem; }
+  .partnership-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    line-height: 1.15;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  .partnership-header h2 em { font-style: italic; color: var(--accent); }
+  .partnership-header p {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    max-width: 640px;
+    line-height: 1.6;
+  }
+
+  .partnership-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .partner-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+  }
+  .partner-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .partner-items { display: flex; flex-direction: column; gap: 0.9rem; }
+  .partner-item {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.5;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .partner-item::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+  }
+
+  .partnership-note {
+    margin-bottom: 4rem;
+  }
+  .partnership-note p {
+    font-size: 1rem;
+    color: var(--text-dim);
+    font-weight: 300;
+    line-height: 1.7;
+    font-style: italic;
+    max-width: 700px;
+  }
+
+  /* ─── Contrast Block ─── */
+  .contrast-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    border-top: 1px solid var(--border);
+    padding-top: 3rem;
+  }
+  .contrast-col { display: flex; flex-direction: column; gap: 0.8rem; }
+  .contrast-label {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+  .contrast-col:first-child .contrast-label { color: var(--text-dim); }
+  .contrast-col:last-child .contrast-label { color: var(--accent); }
+
+  .contrast-item {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 300;
+    line-height: 1.5;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .contrast-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .contrast-item.dim {
+    color: var(--text-dim);
+    text-decoration: line-through;
+    text-decoration-color: rgba(255,255,255,0.15);
+  }
+  .contrast-item.dim::before {
+    background: var(--text-dim);
+    opacity: 0.4;
+  }
+
+  /* ─── Avatar Minimum Bar ─── */
+  .avatar-minimum {
+    margin-top: 2.5rem;
+    padding: 1.5rem 2rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(212, 168, 83, 0.04);
+  }
+  .avatar-minimum p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .avatar-minimum strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* ─── FAQ ─── */
+  .faq {
+    padding: 7rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+  .faq-inner { max-width: 800px; margin: 0 auto; }
+  .faq-header { margin-bottom: 3rem; }
+
+  .faq-grid { display: flex; flex-direction: column; gap: 0; }
+
+  .faq-item {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .faq-item:first-child { border-top: 1px solid var(--border); }
+
+  .faq-item h3 {
+    font-family: var(--sans);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+  }
+  .faq-item p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ─── Footer ─── */
+  footer {
+    padding: 3rem; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-left { font-family: var(--serif); font-size: 1rem; }
+  .footer-left span { color: var(--accent); }
+  .footer-right { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; color: var(--text-dim); }
+
+  /* ─── Animations ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .nav-toggle { display: block; }
+
+    .hero { padding: 7rem 1.5rem 5rem; }
+    .hero-scroll { display: none; }
+    .hero-content { padding-bottom: 4rem; }
+    .hero-actions { flex-direction: column; width: 100%; max-width: 320px; }
+    .hero-actions .btn-primary, .hero-actions .btn-secondary { width: 100%; justify-content: center; }
+
+    .problem { padding: 5rem 1.5rem; }
+    .curves-chart { padding: 1rem 0.5rem 0.5rem; }
+    .convergence { padding: 5rem 1.5rem; }
+    .convergence-visual { grid-template-columns: 1fr; }
+
+    .newbook { padding: 5rem 1.5rem; }
+    .newbook-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+
+    .proof { padding: 5rem 1.5rem; }
+    .proof-grid { grid-template-columns: 1fr 1fr; }
+
+    .process { padding: 5rem 1.5rem; }
+    .step { grid-template-columns: 60px 1fr; gap: 1.5rem; padding: 2rem 0; }
+    .step-num { font-size: 2.5rem; }
+
+    .avatar { padding: 5rem 1.5rem; }
+    .avatar-grid { grid-template-columns: 1fr; }
+
+    .partnership { padding: 5rem 1.5rem; }
+    .partnership-grid { grid-template-columns: 1fr; }
+    .contrast-block { grid-template-columns: 1fr; gap: 2.5rem; }
+
+    .faq { padding: 5rem 1.5rem; }
+
+    .founders { padding: 5rem 1.5rem; }
+    .founders-grid { grid-template-columns: 1fr; }
+
+    .cta { padding: 6rem 1.5rem; }
+    .cta-actions { flex-direction: column; align-items: center; }
+
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+    .proof-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a href="#" class="nav-logo">Worldbuilding<span>.</span></a>
+  <div class="nav-links">
+    <a href="#problem">The Shift</a>
+    <a href="#convergence">The Model</a>
+    <a href="#proof">Proof</a>
+    <a href="#process">Process</a>
+    <a href="#partnership">Partnership</a>
+    <a href="#founders">Team</a>
+    <a href="#cta" class="nav-cta">Book a Call</a>
+  </div>
+  <button class="nav-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <!-- Earth Background Visual -->
+  <div class="hero-earth-bg">
+    <canvas id="earthCanvas"></canvas>
+    <div class="earth-atmosphere"></div>
+  </div>
+
+  <!-- Hero Content (above earth) -->
+  <div class="hero-content">
+    <div class="hero-tag">Apps × Info/Coaching × Media</div>
+    <h1>Build your own <em>world,</em><br>not just a following.</h1>
+    <p class="hero-sub">We partner with creators to build entire ecosystems — apps, info products, and coaching — that turn personal brands into businesses with real enterprise value.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">Book a Free Strategy Call →</a>
+      <a href="#problem" class="btn-secondary">See the Thesis</a>
+    </div>
+    <div class="hero-trust">Equity-aligned · Full-stack build & operations · For creators with 1M+ audiences</div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- Problem / Agitation -->
+<section class="problem" id="problem">
+  <div class="problem-inner reveal">
+    <div class="section-num">01 — The Problem</div>
+    <h2>Most creators are stuck building <em>offers.</em> Not <em>assets.</em></h2>
+    <p>The creator economy sold everyone on courses, coaching, and content. And for a while, it worked. But the math has changed. <strong>The space is overcrowded, the top 10% are pulling away, and everyone else is on a hamster wheel</strong> — launching new offers every quarter just to maintain revenue.</p>
+
+    <div class="pain-grid">
+      <div class="pain-point">
+        <div class="pain-num">→</div>
+        <p>You have a real audience — but no backend monetization system beyond brand deals and ad revenue.</p>
+      </div>
+      <div class="pain-point">
+        <div class="pain-num">→</div>
+        <p>Revenue is volatile. Every launch is a sprint, and between launches, the cash flow drops.</p>
+      </div>
+      <div class="pain-point">
+        <div class="pain-num">→</div>
+        <p>Your agency is optimizing ad spend and content — but nobody is building long-term assets for your brand.</p>
+      </div>
+      <div class="pain-point">
+        <div class="pain-num">→</div>
+        <p>You have no scalable product ladder. No way to take a free follower and move them up to high-ticket without doing everything manually.</p>
+      </div>
+      <div class="pain-point">
+        <div class="pain-num">→</div>
+        <p>You're generating cash flow — but building zero enterprise value. Nothing compounds. Nothing can be sold.</p>
+      </div>
+    </div>
+
+    <p>Meanwhile, the creators who are separating from the pack have figured out something different. <strong>They're not just making content — they're building worlds.</strong> Ecosystems their audience lives inside. Products that run without them. Assets that appreciate.</p>
+    <div class="callout">
+      <p>Apps are the <em>new book.</em> The front-end that used to be a $27 ebook is becoming a branded app — one that acquires customers, delivers value on its own, and feeds your high-ticket backend.</p>
+    </div>
+
+    <!-- Revenue Curves Graph -->
+    <div class="curves-section reveal">
+      <h3>Every business model has a flaw. The answer is combining two.</h3>
+      <div class="curves-chart">
+        <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg">
+          <!-- Axes -->
+          <line x1="60" y1="20" x2="60" y2="300" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <line x1="60" y1="300" x2="660" y2="300" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+          <!-- Axis labels -->
+          <text x="30" y="165" font-family="DM Sans, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" transform="rotate(-90, 30, 165)">Revenue / Value</text>
+          <text x="360" y="325" font-family="DM Sans, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle">Time</text>
+
+          <!-- Grid lines -->
+          <line x1="60" y1="230" x2="660" y2="230" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+          <line x1="60" y1="160" x2="660" y2="160" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+          <line x1="60" y1="90" x2="660" y2="90" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+
+          <!-- 1. Services: Linear (muted) -->
+          <path d="M80 280 L620 120" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <text x="625" y="118" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(255,255,255,0.25)">Services</text>
+
+          <!-- 2. E-Commerce: Stair steps (muted) -->
+          <path d="M80 275 L160 275 L160 240 L240 240 L240 210 L320 210 L320 185 L400 185 L400 165 L480 165 L480 150 L560 150 L560 140 L620 140" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <text x="625" y="138" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(255,255,255,0.25)">E-Commerce</text>
+
+          <!-- 3. Info/Coaching: Fast rise, plateau (gold, semi-bright) -->
+          <path d="M80 275 Q150 180 200 110 Q250 70 350 65 Q450 62 550 60 L620 58" fill="none" stroke="rgba(212,168,83,0.5)" stroke-width="2"/>
+          <text x="625" y="56" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(212,168,83,0.6)">Info/Coaching</text>
+          <text x="260" y="55" font-family="DM Sans, sans-serif" font-size="9" fill="rgba(212,168,83,0.4)" font-style="italic">plateaus ↗</text>
+
+          <!-- 4. Software: Slow then exponential (gold, semi-bright) -->
+          <path d="M80 278 Q200 276 300 270 Q380 260 440 230 Q500 180 550 100 Q580 50 620 20" fill="none" stroke="rgba(212,168,83,0.5)" stroke-width="2"/>
+          <text x="625" y="18" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(212,168,83,0.6)">Software</text>
+          <text x="460" y="245" font-family="DM Sans, sans-serif" font-size="9" fill="rgba(212,168,83,0.4)" font-style="italic">slow start →</text>
+
+          <!-- 5. Combined: Info cashflow + Software compounding (bright gold, thick) -->
+          <defs>
+            <linearGradient id="comboGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(212,168,83,0.8)"/>
+              <stop offset="100%" stop-color="rgba(212,168,83,1)"/>
+            </linearGradient>
+          </defs>
+          <path d="M80 275 Q140 200 200 130 Q260 90 320 75 Q400 55 460 40 Q520 20 580 -5 L620 -20" fill="none" stroke="url(#comboGrad)" stroke-width="3" stroke-linecap="round"/>
+          <text x="540" y="345" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(212,168,83,1)" font-weight="600">Info/Coaching + Software</text>
+        </svg>
+      </div>
+      <p class="curves-caption">Info and coaching gives you the <strong>fast cash flow</strong> to fund operations from day one. Software gives you the <strong>exponential enterprise value</strong> that compounds over time. We build both — together.</p>
+    </div>
+  </div>
+</section>
+
+<!-- The Convergence -->
+<section class="convergence" id="convergence">
+  <div class="convergence-inner">
+    <div class="convergence-header reveal">
+      <div class="section-num">02 — The Convergence</div>
+      <h2>Three industries are merging. We build at the <em>intersection.</em></h2>
+      <p>The future of the creator economy isn't in any one lane. It's in the convergence of all three — and the creators who see it first will own the next decade.</p>
+    </div>
+    <div class="convergence-visual reveal">
+      <div class="conv-pillar">
+        <div class="conv-num">Pillar I</div>
+        <h3>Info & Coaching</h3>
+        <p>The knowledge layer. Courses, coaching programs, communities, and digital products that turn expertise into structured transformation. This is where the relationship and the revenue model live.</p>
+      </div>
+      <div class="conv-pillar">
+        <div class="conv-num">Pillar II</div>
+        <h3>Apps & Tech</h3>
+        <p>The infrastructure layer. Custom apps and software that deliver your methodology at scale — without you in the room. This is what creates enterprise value and self-liquidating acquisition.</p>
+      </div>
+      <div class="conv-pillar">
+        <div class="conv-num">Pillar III</div>
+        <h3>Entertainment</h3>
+        <p>The attention layer. Narrative, media, and story that make your brand a world people want to inhabit — not just a product they consume. This is what makes it a universe, not just an offer.</p>
+      </div>
+    </div>
+    <div class="convergence-base reveal">
+      <p>Built on the Creator Economy</p>
+      <span>Your audience. Your brand. Your world. We provide the operating system.</span>
+    </div>
+  </div>
+</section>
+
+<!-- Apps Are The New Book -->
+<section class="newbook" id="newbook">
+  <div class="newbook-inner">
+    <div class="newbook-left reveal">
+      <div class="section-num">03 — The Shift</div>
+      <h2>Apps are the new <em>book.</em></h2>
+      <p>Books used to be the ultimate front-end — a low-cost product that established authority and fed everything else. But people are burned out on reading and buried in PDFs. The format has evolved.</p>
+      <p>A branded app acquires customers cheaply (or profitably), delivers ongoing value, and feeds your high-ticket coaching and community on the backend. It's self-liquidating — meaning your ad spend pays for itself before the real money even starts.</p>
+      <p>We build these. Fast.</p>
+    </div>
+    <div class="newbook-right reveal">
+      <div class="comparison-label">The evolution</div>
+      <div class="comparison-row">
+        <span class="comp-old">Ebook</span>
+        <span class="comp-arrow">→</span>
+        <span class="comp-new">Branded App</span>
+      </div>
+      <div class="comparison-row">
+        <span class="comp-old">Course</span>
+        <span class="comp-arrow">→</span>
+        <span class="comp-new">Software Platform</span>
+      </div>
+      <div class="comparison-row">
+        <span class="comp-old">Webinar</span>
+        <span class="comp-arrow">→</span>
+        <span class="comp-new">Interactive Experience</span>
+      </div>
+      <div class="comparison-row">
+        <span class="comp-old">Content</span>
+        <span class="comp-arrow">→</span>
+        <span class="comp-new">Owned Ecosystem</span>
+      </div>
+      <div class="comparison-row">
+        <span class="comp-old">Cash Flow</span>
+        <span class="comp-arrow">→</span>
+        <span class="comp-new">Enterprise Value</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Case Studies / Proof -->
+<section class="proof" id="proof">
+  <div class="proof-inner">
+    <div class="proof-header reveal">
+      <div class="section-num">04 — The Proof</div>
+      <h2>This isn't a theory. It's already <em>happening.</em></h2>
+      <p>Across every niche, creators are turning their content and methodology into branded apps — and building real enterprise value in the process.</p>
+    </div>
+
+    <!-- Tier 1: At Scale -->
+    <div class="proof-tier-label reveal">At Scale</div>
+    <div class="proof-grid reveal">
+      <div class="proof-card">
+        <div class="proof-niche">Fitness</div>
+        <div class="proof-creator">Kayla Itsines</div>
+        <div class="proof-app">Sweat</div>
+        <div class="proof-desc">Started posting workout photos on Instagram. Turned her Bikini Body Guide into a subscription app with 50M+ members — then sold the company.</div>
+        <div class="proof-metric">
+          <div class="metric-value">$400M</div>
+          <div class="metric-label">Exit to iFit</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-niche">Meditation</div>
+        <div class="proof-creator">Sam Harris</div>
+        <div class="proof-app">Waking Up</div>
+        <div class="proof-desc">Translated his philosophy and meditation practice into a premium subscription app. 100K+ five-star ratings. Methodology turned into daily software.</div>
+        <div class="proof-metric">
+          <div class="metric-value">$129.99/yr</div>
+          <div class="metric-label">Premium subscription</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-niche">Finance</div>
+        <div class="proof-creator">Dave Ramsey</div>
+        <div class="proof-app">EveryDollar</div>
+        <div class="proof-desc">Turned his zero-based budgeting methodology into a freemium app. Serves as both front-end acquisition for his coaching ecosystem and standalone product.</div>
+        <div class="proof-metric">
+          <div class="metric-value">10M+</div>
+          <div class="metric-label">Users</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-niche">Creative Tools</div>
+        <div class="proof-creator">Tezza Barton</div>
+        <div class="proof-app">Tezza</div>
+        <div class="proof-desc">Turned her Instagram aesthetic into a photo and video editing app with subscription tiers. Not coaching — pure SaaS built from a creator brand.</div>
+        <div class="proof-metric">
+          <div class="metric-value">~$30M</div>
+          <div class="metric-label">ARR (Forbes)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier 2: In Motion -->
+    <div class="proof-tier-label reveal">In Motion</div>
+    <div class="proof-grid reveal">
+      <div class="proof-card">
+        <div class="proof-niche">Wellness</div>
+        <div class="proof-creator">Melissa Wood</div>
+        <div class="proof-app">MWH</div>
+        <div class="proof-desc">Built a pilates and sculpt membership app from her Instagram following. So successful it became a Harvard Business School case study on the creator economy.</div>
+        <div class="proof-metric">
+          <div class="metric-value">92K</div>
+          <div class="metric-label">Paying subscribers</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-niche">Yoga</div>
+        <div class="proof-creator">Adriene Mishler</div>
+        <div class="proof-app">FWFG</div>
+        <div class="proof-desc">Gave away free yoga on YouTube for years — 11M subscribers. Then launched a subscription app with 900+ classes and 100K+ five-star reviews.</div>
+        <div class="proof-metric">
+          <div class="metric-value">11M</div>
+          <div class="metric-label">Free audience → paid product</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-niche">Food</div>
+        <div class="proof-creator">Kevin Curry</div>
+        <div class="proof-app">FitMenCook</div>
+        <div class="proof-desc">Turned his healthy recipe content into a full meal planning app with shopping lists and recipe database. App Store Best-of recognition, millions of downloads.</div>
+        <div class="proof-metric">
+          <div class="metric-value">1M+</div>
+          <div class="metric-label">Social following → app users</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-niche">E-Commerce</div>
+        <div class="proof-creator">Will Rivera</div>
+        <div class="proof-app">Scan Profit</div>
+        <div class="proof-desc">Amazon FBA coach with 768K followers who turned his sourcing methodology into a proprietary AI tool. Coaching framework crystallized into software.</div>
+        <div class="proof-metric">
+          <div class="metric-value">20K+</div>
+          <div class="metric-label">Students using the tool</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier 3: Just Launched -->
+    <div class="proof-tier-label reveal">Just Launched</div>
+    <div class="proof-grid reveal">
+      <div class="proof-card">
+        <div class="proof-niche">Personal Finance</div>
+        <div class="proof-creator">Casper Capital</div>
+        <div class="proof-app">Payout</div>
+        <div class="proof-desc">Built a 10M-follower finance brand from his bedroom. Cofounded an app that hit 160K+ users and six figures monthly — launched and charted in 90 days.</div>
+        <div class="proof-metric">
+          <div class="metric-value">$217K</div>
+          <div class="metric-label">Revenue in 5 months</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-niche">Self-Help</div>
+        <div class="proof-creator">Mark Manson</div>
+        <div class="proof-app">Purpose</div>
+        <div class="proof-desc">Took his bestselling philosophy and turned it into an AI-powered personal coaching app. 20M+ books sold, now crystallized into interactive software.</div>
+        <div class="proof-metric">
+          <div class="metric-value">2025</div>
+          <div class="metric-label">Just launched (Fast Company)</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-niche">Science Fitness</div>
+        <div class="proof-creator">Jeff Nippard</div>
+        <div class="proof-app">MacroFactor</div>
+        <div class="proof-desc">YouTube fitness scientist with 4M+ subscribers who turned evidence-based training into a personalized workout app with auto-adjusting programming.</div>
+        <div class="proof-metric">
+          <div class="metric-value">4.9★</div>
+          <div class="metric-label">App Store rating</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-niche">Breathwork</div>
+        <div class="proof-creator">Wim Hof</div>
+        <div class="proof-app">Wim Hof Method</div>
+        <div class="proof-desc">Turned his cold exposure and breathwork protocol into a guided app with routines and tracking. A proprietary method delivered as interactive software.</div>
+        <div class="proof-metric">
+          <div class="metric-value">€6M</div>
+          <div class="metric-label">Annual revenue (The Guardian)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proof-footer reveal">
+      <p>Fitness, finance, food, meditation, creative tools, self-help, breathwork, e-commerce, yoga, wellness. <strong>Every niche. Same pattern.</strong> Creators with a methodology and an audience are turning their knowledge into software — and their brands into real businesses. <strong>That's the move. We help you make it.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="process" id="process">
+  <div class="process-inner">
+    <div class="process-header reveal">
+      <div class="section-num">05 — The Process</div>
+      <h2>From methodology to <em>living product.</em></h2>
+    </div>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Extract</h3>
+          <p>We study your content, your audience, and your unique methodology. We identify the core IP — the thing that only you can teach — and figure out what it looks like as a product, not just a curriculum.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Architect</h3>
+          <p>We design the full ecosystem — your app, your offer stack, your coaching layer. Every piece connects and compounds. Front-end acquisition feeds backend revenue. We build the world on paper first.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>Build & Ship</h3>
+          <p>Our team designs, develops, and launches your app in 2–3 months. Info products and coaching programs are architected alongside — launching either sequentially in an orchestrated rollout or as a cohesive system, depending on what your business needs.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Scale the World</h3>
+          <p>We stay on as operators. Growth, funnels, paid media, product expansion, data-driven optimization. The app self-liquidates your ad spend. The coaching compounds your LTV. The world grows.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partnership Model -->
+<section class="partnership" id="partnership">
+  <div class="partnership-inner">
+    <div class="partnership-header reveal">
+      <div class="section-num">06 — The Partnership</div>
+      <h2>We don't charge you to build. We <em>partner</em> with you to grow.</h2>
+      <p>This isn't an agency retainer. We invest our team, our time, and our infrastructure into your brand — and we succeed when you succeed. Every partnership is custom-structured based on what each party brings to the table and how we can best collaborate.</p>
+    </div>
+
+    <div class="partnership-grid">
+      <div class="partner-card reveal">
+        <div class="partner-label">What you bring</div>
+        <div class="partner-items">
+          <div class="partner-item">Your audience and distribution</div>
+          <div class="partner-item">Your methodology, framework, or unique expertise</div>
+          <div class="partner-item">Your face, your voice, your content</div>
+        </div>
+      </div>
+      <div class="partner-card reveal">
+        <div class="partner-label">What we bring</div>
+        <div class="partner-items">
+          <div class="partner-item">App design, development, and deployment</div>
+          <div class="partner-item">Offer architecture and product ladder design</div>
+          <div class="partner-item">Info product and coaching program buildout</div>
+          <div class="partner-item">Growth operations, funnels, and paid media</div>
+          <div class="partner-item">Ongoing optimization, iteration, and scaling</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="partnership-note reveal">
+      <p>You stay in your zone — on camera, creating content, engaging your audience. We build and operate everything behind you. If you already have a team, we integrate with them. Where there are gaps, we fill them. The structure is equity-aligned and custom to every creator.</p>
+    </div>
+
+    <!-- Why This Is Different -->
+    <div class="contrast-block reveal">
+      <div class="contrast-col">
+        <div class="contrast-label">Not this.</div>
+        <div class="contrast-item dim">A retainer agency billing monthly</div>
+        <div class="contrast-item dim">One-off funnel builds or course launches</div>
+        <div class="contrast-item dim">A dev shop that ships and charges for maintenance</div>
+        <div class="contrast-item dim">A standalone app disconnected from your business</div>
+      </div>
+      <div class="contrast-col">
+        <div class="contrast-label">This.</div>
+        <div class="contrast-item">Long-term equity partnership</div>
+        <div class="contrast-item">Full ecosystem — app, coaching, and growth</div>
+        <div class="contrast-item">Ongoing operations, iteration, and scaling</div>
+        <div class="contrast-item">App with enterprise value that feeds a high-ticket backend</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Who This Is For -->
+<section class="avatar" id="avatar">
+  <div class="avatar-inner">
+    <div class="avatar-header reveal">
+      <div class="section-num">07 — Who This Is For</div>
+      <h2>We work with creators who are <em>ready for what's next.</em></h2>
+      <p>We take on a small number of partners at a time. This is for established creators with real traction who want to turn their brand into an institutional asset — not a side project.</p>
+    </div>
+    <div class="avatar-grid">
+      <div class="avatar-card reveal">
+        <div class="av-label">Profile 01</div>
+        <h3>The Under-Monetized Creator</h3>
+        <p>You have the audience — 1M+ followers, real engagement — but you're still relying on brand deals and ad revenue. You know there's a bigger play. You just don't have the infrastructure to build it.</p>
+      </div>
+      <div class="avatar-card reveal">
+        <div class="av-label">Profile 02</div>
+        <h3>The High-Ticket Coach</h3>
+        <p>You're doing real revenue — maybe seven figures — but your acquisition costs keep climbing. You need a front-end product that brings people in cheaply and feeds your coaching on the backend.</p>
+      </div>
+      <div class="avatar-card reveal">
+        <div class="av-label">Profile 03</div>
+        <h3>The Legacy Builder</h3>
+        <p>You've built something meaningful and you're thinking long-term. You want enterprise value — an asset that compounds, that can be sold, that outlasts the next algorithm change.</p>
+      </div>
+    </div>
+    <div class="avatar-minimum reveal">
+      <p><strong>Who we typically work with:</strong> Creators with 1M+ followers across platforms, or demonstrated product-market fit with an existing offer. If you're already selling something and it's working — even with a smaller audience — we want to talk.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Founders -->
+<section class="founders" id="founders">
+  <div class="founders-inner">
+    <div class="founders-header reveal">
+      <div class="section-num">08 — The Team</div>
+      <h2>We span <em>both worlds.</em></h2>
+    </div>
+    <div class="founders-grid">
+      <div class="founder-card reveal">
+        <div class="founder-role">Product & Engineering</div>
+        <h3>Nick Daigler</h3>
+        <p>Shipped at Suno, Reddit, Instagram, and OpenSea. KP Fellow. Built and launched 15+ apps. Nick knows how to take a product from zero to live — fast, clean, and built to scale.</p>
+        <div class="founder-tags">
+          <span>Product</span>
+          <span>Engineering</span>
+          <span>Mobile</span>
+          <span>AI-Native</span>
+        </div>
+      </div>
+      <div class="founder-card reveal">
+        <div class="founder-role">Growth & Strategy</div>
+        <h3>Brandon Narvaeth</h3>
+        <p>Growth marketer and internet marketing strategist behind offers and high-ticket coaching programs that have done $30M+. Currently works with top coaches generating multiple millions per year in profit from 1-on-1 programs — some coaching the biggest names in the world.</p>
+        <div class="founder-tags">
+          <span>Growth</span>
+          <span>Offer Architecture</span>
+          <span>High-Ticket</span>
+          <span>Strategy</span>
+        </div>
+      </div>
+      <div class="founder-card reveal">
+        <div class="founder-role">Sales & Customer Success</div>
+        <h3>Evan Zumwalde</h3>
+        <p>Personally closed millions in sales in the creator and high-ticket space. Trained and developed sales talent that have gone on to contribute to tens of millions in closed revenue. Evan ensures every creator's audience converts — and keeps converting.</p>
+        <div class="founder-tags">
+          <span>Sales</span>
+          <span>Closing</span>
+          <span>Sales Training</span>
+          <span>Optimization</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="faq-inner">
+    <div class="faq-header reveal">
+      <div class="section-num">09 — Common Questions</div>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <h3>How does the equity partnership work?</h3>
+        <p>Every deal is custom-structured based on what you bring — audience size, engagement, existing revenue, niche, and level of involvement. We invest our team and infrastructure in exchange for an equity position in the products we build together. We only win when you win. Details are discussed on the strategy call.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h3>I already have a team. Does that matter?</h3>
+        <p>That's actually a great thing. We integrate with your existing team — your editors, your managers, your community leads. Where there are gaps in product development, offer architecture, or growth operations, we fill them. We're not here to replace anyone.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h3>How much of my time does this take?</h3>
+        <p>Your job stays the same — create content, be on camera, engage your audience. We handle product development, offer buildout, backend operations, and growth. You'll be involved in strategy sessions and product feedback, but the heavy lifting is on us. That's the point.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h3>How is this different from hiring a dev shop to build an app?</h3>
+        <p>A dev shop builds an app — some walk away, some charge hefty retainers for ongoing maintenance or take significant equity for the privilege. Either way, you get software. We build an entire ecosystem — the app, the coaching layer, the offer ladder, the growth engine — and we stay on as operators who continually iterate to ensure your users get results and ascend into higher-ticket offerings. The app can absolutely be a standalone product with real enterprise value on its own. But it's also the front door to a cash-flow-intensive business behind it. That's the difference.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h3>How long until the app is live?</h3>
+        <p>Typically 2–3 months from kickoff to launch. The broader ecosystem buildout — coaching programs, funnels, offer architecture — runs in parallel and launches either sequentially in an orchestrated rollout or alongside the app as a cohesive system, depending on what your business needs. Some partners have been fully operational within 90 days.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="reveal">
+    <div class="section-num" style="margin-bottom:2rem;">Now Accepting Partners</div>
+    <h2>Stop launching offers.<br>Start building a business <em>worth owning.</em></h2>
+    <p>We work with a limited number of creators at a time. If you have the audience and the methodology, we have the infrastructure. Book a free strategy call below — no commitment, just clarity on what's possible.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-primary">Book a Free Strategy Call →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-left">Worldbuilding<span>.</span></div>
+  <div class="footer-right">© 2026 Worldbuilding Studio. All rights reserved.</div>
+</footer>
+
+<script>
+  // ─── Scroll Reveal ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.background =
+      window.scrollY > 100 ? 'rgba(8,8,10,0.92)' : 'rgba(8,8,10,0.7)';
+  });
+
+  // ─── Realistic Earth Canvas ───
+  (function() {
+    const canvas = document.getElementById('earthCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let w, h, earthCX, earthCY, earthR, rotation = 0;
+
+    function resize() {
+      w = window.innerWidth;
+      h = 500;
+      canvas.width = w;
+      canvas.height = h;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+
+      earthCX = w / 2;
+      const topY = 40;
+      const d = h - topY;
+      const halfW = w / 2;
+      earthR = (halfW * halfW + d * d) / (2 * d);
+      earthCY = topY + earthR;
+    }
+
+    resize();
+
+    function seededRandom(seed) {
+      const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
+      return x - Math.floor(x);
+    }
+
+    function drawLand(angleOffset, angularWidth, innerR, outerR, color) {
+      const centerAngle = -Math.PI / 2 + angleOffset + rotation;
+      const a1 = centerAngle - angularWidth / 2;
+      const a2 = centerAngle + angularWidth / 2;
+      const r1 = innerR * earthR;
+      const r2 = outerR * earthR;
+
+      ctx.beginPath();
+      const steps = 28;
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const a = a1 + (a2 - a1) * t;
+        const jitter = Math.sin(t * 17 + a * 7) * earthR * 0.005;
+        const x = earthCX + Math.cos(a) * (r2 + jitter);
+        const y = earthCY + Math.sin(a) * (r2 + jitter);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      for (let i = steps; i >= 0; i--) {
+        const t = i / steps;
+        const a = a1 + (a2 - a1) * t;
+        const jitter = Math.sin(t * 11 + a * 5) * earthR * 0.004;
+        const x = earthCX + Math.cos(a) * (r1 + jitter);
+        const y = earthCY + Math.sin(a) * (r1 + jitter);
+        ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+
+      // Atmosphere glow
+      const atmosGrad = ctx.createRadialGradient(earthCX, earthCY, earthR - 10, earthCX, earthCY, earthR + 50);
+      atmosGrad.addColorStop(0, 'rgba(80, 160, 255, 0.04)');
+      atmosGrad.addColorStop(0.5, 'rgba(60, 140, 240, 0.1)');
+      atmosGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = atmosGrad;
+      ctx.beginPath();
+      ctx.arc(earthCX, earthCY, earthR + 50, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Clip to earth
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(earthCX, earthCY, earthR, 0, Math.PI * 2);
+      ctx.clip();
+
+      // Ocean
+      const oceanGrad = ctx.createRadialGradient(earthCX, earthCY - earthR * 0.5, 0, earthCX, earthCY, earthR);
+      oceanGrad.addColorStop(0, '#1a5f8a');
+      oceanGrad.addColorStop(0.3, '#175580');
+      oceanGrad.addColorStop(0.6, '#104570');
+      oceanGrad.addColorStop(1, '#0a2942');
+      ctx.fillStyle = oceanGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Continents
+      // North America
+      drawLand(-0.35, 0.30, 0.90, 0.985, '#2d6b3a');
+      drawLand(-0.30, 0.20, 0.92, 0.978, '#347a40');
+      drawLand(-0.22, 0.14, 0.93, 0.975, '#2a5e32');
+
+      // South America
+      drawLand(-0.55, 0.14, 0.88, 0.96, '#2d8a3e');
+      drawLand(-0.53, 0.09, 0.89, 0.94, '#3a9e4a');
+
+      // Europe
+      drawLand(0.10, 0.12, 0.955, 0.99, '#3a7a42');
+      drawLand(0.14, 0.07, 0.96, 0.985, '#2e6634');
+
+      // Africa
+      drawLand(0.16, 0.22, 0.88, 0.955, '#4a8a3a');
+      drawLand(0.19, 0.14, 0.89, 0.94, '#c4a44a');
+      drawLand(0.21, 0.10, 0.90, 0.935, '#3d7a35');
+
+      // Middle East
+      drawLand(0.28, 0.07, 0.94, 0.975, '#c4a44a');
+
+      // Asia
+      drawLand(0.40, 0.28, 0.92, 0.99, '#347a3e');
+      drawLand(0.38, 0.18, 0.935, 0.98, '#2d6b32');
+      drawLand(0.55, 0.16, 0.90, 0.97, '#3a8a42');
+
+      // Australia
+      drawLand(0.62, 0.11, 0.87, 0.935, '#c49a3a');
+      drawLand(0.63, 0.07, 0.88, 0.925, '#b8923a');
+
+      // Clouds
+      for (let i = 0; i < 50; i++) {
+        const angle = -Math.PI / 2 + (seededRandom(i) * 1.8 - 0.9) + rotation * 1.05;
+        const radius = (0.88 + seededRandom(i + 100) * 0.1) * earthR;
+        const size = 15 + seededRandom(i + 200) * 40;
+        const opacity = 0.04 + seededRandom(i + 300) * 0.08;
+
+        const x = earthCX + Math.cos(angle) * radius;
+        const y = earthCY + Math.sin(angle) * radius;
+        if (y > h + 30) continue;
+
+        const cGrad = ctx.createRadialGradient(x, y, 0, x, y, size);
+        cGrad.addColorStop(0, `rgba(255,255,255,${opacity})`);
+        cGrad.addColorStop(0.5, `rgba(240,248,255,${opacity * 0.4})`);
+        cGrad.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = cGrad;
+        ctx.beginPath();
+        ctx.ellipse(x, y, size * 2, size * 0.7, angle * 0.15, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Day/night terminator
+      const shadowGrad = ctx.createLinearGradient(0, 0, w, 0);
+      shadowGrad.addColorStop(0, 'rgba(0,0,0,0)');
+      shadowGrad.addColorStop(0.55, 'rgba(0,0,0,0)');
+      shadowGrad.addColorStop(0.85, 'rgba(0,0,10,0.2)');
+      shadowGrad.addColorStop(1, 'rgba(0,0,10,0.4)');
+      ctx.fillStyle = shadowGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.restore();
+
+      // Atmosphere rim
+      ctx.beginPath();
+      ctx.arc(earthCX, earthCY, earthR, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(100, 180, 255, 0.15)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      rotation += 0.00008;
+      requestAnimationFrame(draw);
+    }
+
+    // Wait for layout to be computed
+    requestAnimationFrame(() => {
+      resize();
+      draw();
+    });
+
+    window.addEventListener('resize', () => { resize(); });
+  })();
+</script>
+
+</body>
+</html>
